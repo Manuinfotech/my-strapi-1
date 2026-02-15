@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
-import 'screens/college_list_screen.dart';
+import 'screens/main_screen.dart';
 import 'screens/college_detail_screen.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/signup_screen.dart';
+import 'screens/auth/forgot_password_screen.dart';
+import 'screens/profile/edit_profile_screen.dart';
+import 'screens/settings/settings_screen.dart';
+import 'screens/notifications_screen.dart';
+import 'screens/college_list_screen.dart';
 import 'models/college.dart';
 
 void main() {
@@ -19,9 +25,15 @@ class CollegePortalApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => const HomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/forgot_password': (context) => const ForgotPasswordScreen(),
+        '/main': (context) => const MainScreen(),
+        '/edit_profile': (context) => const EditProfileScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/notifications': (context) => const NotificationsScreen(),
         '/college_list': (context) => const CollegeListScreen(),
       },
       onGenerateRoute: (settings) {
