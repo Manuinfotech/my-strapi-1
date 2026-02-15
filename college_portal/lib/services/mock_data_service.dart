@@ -1,7 +1,22 @@
 import '../models/college.dart';
 import '../models/course.dart';
+import '../models/user.dart';
 
 class MockDataService {
+  static User getUser() {
+    return User(
+      id: 'u1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      profilePictureUrl: 'https://via.placeholder.com/150',
+    );
+  }
+
+  static List<College> getFavoriteColleges() {
+    List<College> allColleges = getColleges();
+    return [allColleges[0], allColleges[2]];
+  }
+
   static List<College> getColleges() {
     return [
       College(
