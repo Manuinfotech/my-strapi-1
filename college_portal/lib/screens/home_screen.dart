@@ -14,9 +14,9 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('College Portal'),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.person)),
         ],
       ),
       body: SingleChildScrollView(
@@ -26,15 +26,27 @@ class HomeScreen extends StatelessWidget {
             // Search Bar
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search for colleges, exams, courses...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/search');
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.grey.shade400),
                   ),
-                  filled: true,
-                  fillColor: Colors.grey[200],
+                  child: Row(
+                    children: const [
+                      Icon(Icons.search, color: Colors.grey),
+                      SizedBox(width: 10),
+                      Text(
+                        'Search for colleges, exams, courses...',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

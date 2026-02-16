@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'college_list_screen.dart';
-import 'profile/profile_screen.dart';
-import 'favorites_screen.dart';
+import 'saved_colleges_screen.dart';
+import 'profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -16,8 +15,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const CollegeListScreen(),
-    const FavoritesScreen(),
+    const SavedCollegesScreen(),
     const ProfileScreen(),
   ];
 
@@ -32,15 +30,10 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Colleges',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
@@ -52,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
     );

@@ -35,6 +35,10 @@ class CollegePortalApp extends StatelessWidget {
         '/settings': (context) => const SettingsScreen(),
         '/notifications': (context) => const NotificationsScreen(),
         '/college_list': (context) => const CollegeListScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/saved': (context) => const SavedCollegesScreen(),
+        '/search': (context) => const SearchScreen(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/college_detail') {
