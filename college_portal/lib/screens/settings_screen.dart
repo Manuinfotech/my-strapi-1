@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../main.dart'; // Import to access CollegePortalApp.toggleTheme
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -10,6 +12,20 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _pushNotifications = true;
   bool _darkMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _darkMode = prefs.getBool('darkMode') ?? false;
+      // Push notifications setting would be loaded similarly
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _darkMode = val;
               });
+              CollegePortalApp.toggleTheme(context);
             },
             secondary: const Icon(Icons.dark_mode),
           ),

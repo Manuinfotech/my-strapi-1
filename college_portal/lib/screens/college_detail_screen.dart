@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/college.dart';
 import '../services/mock_data_service.dart';
 
@@ -6,6 +8,13 @@ class CollegeDetailScreen extends StatelessWidget {
   final College college;
 
   const CollegeDetailScreen({super.key, required this.college});
+
+  Future<void> _launchURL() async {
+    final Uri url = Uri.parse('https://example.com'); // Placeholder URL
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +35,14 @@ class CollegeDetailScreen extends StatelessWidget {
                           color: Colors.white,
                           fontSize: 16.0,
                         )),
-                    background: Image.network(
-                      college.imageUrl,
+                    background: CachedNetworkImage(
+                      imageUrl: college.imageUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
+                      placeholder: (context, url) => Container(
+                        color: Colors.grey[200],
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Container(
                         color: Colors.grey[300],
                         child: const Center(child: Icon(Icons.school, size: 50, color: Colors.grey)),
                       ),
@@ -60,6 +73,11 @@ class CollegeDetailScreen extends StatelessWidget {
               const Center(child: Text("Reviews Data")),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _launchURL,
+          icon: const Icon(Icons.public),
+          label: const Text('Visit Website'),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/college.dart';
 
 class CollegeCard extends StatelessWidget {
@@ -21,12 +22,17 @@ class CollegeCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.network(
-                college.imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: college.imageUrl,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+                placeholder: (context, url) => Container(
+                  height: 150,
+                  color: Colors.grey[200],
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+                errorWidget: (context, url, error) => Container(
                   height: 150,
                   color: Colors.grey[300],
                   child: const Center(child: Icon(Icons.school, size: 50, color: Colors.grey)),

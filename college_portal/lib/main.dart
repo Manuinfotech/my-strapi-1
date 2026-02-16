@@ -1,39 +1,77 @@
 import 'package:flutter/material.dart';
-import 'screens/main_screen.dart';
-import 'screens/college_detail_screen.dart';
-import 'screens/auth/login_screen.dart';
-import 'screens/auth/signup_screen.dart';
-import 'screens/auth/forgot_password_screen.dart';
-import 'screens/profile/edit_profile_screen.dart';
-import 'screens/settings/settings_screen.dart';
-import 'screens/notifications_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/home_screen.dart';
 import 'screens/college_list_screen.dart';
+import 'screens/college_detail_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/signup_screen.dart';
+import 'screens/main_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/settings_screen.dart';
+import 'screens/saved_colleges_screen.dart';
+import 'screens/search_screen.dart';
 import 'models/college.dart';
 
-void main() {
-  runApp(const CollegePortalApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final bool isDarkMode = prefs.getBool('darkMode') ?? false;
+
+  runApp(CollegePortalApp(initialDarkMode: isDarkMode));
 }
 
-class CollegePortalApp extends StatelessWidget {
-  const CollegePortalApp({super.key});
+class CollegePortalApp extends StatefulWidget {
+  final bool initialDarkMode;
+
+  const CollegePortalApp({super.key, required this.initialDarkMode});
+
+  static void toggleTheme(BuildContext context) {
+    final state = context.findAncestorStateOfType<_CollegePortalAppState>();
+    state?.toggleTheme();
+  }
+
+  @override
+  State<CollegePortalApp> createState() => _CollegePortalAppState();
+}
+
+class _CollegePortalAppState extends State<CollegePortalApp> {
+  late bool _isDarkMode;
+
+  @override
+  void initState() {
+    super.initState();
+    _isDarkMode = widget.initialDarkMode;
+  }
+
+  void toggleTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+    await prefs.setBool('darkMode', _isDarkMode);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'College Portal',
       theme: ThemeData(
+        brightness: _isDarkMode ? Brightness.dark : Brightness.light,
         primarySwatch: Colors.blue,
         useMaterial3: true,
+        textTheme: GoogleFonts.latoTextTheme(
+          _isDarkMode ? ThemeData.dark().textTheme : ThemeData.light().textTheme,
+        ),
       ),
-      initialRoute: '/login',
+      initialRoute: '/onboarding',
       routes: {
+        '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
-        '/forgot_password': (context) => const ForgotPasswordScreen(),
         '/main': (context) => const MainScreen(),
-        '/edit_profile': (context) => const EditProfileScreen(),
-        '/settings': (context) => const SettingsScreen(),
-        '/notifications': (context) => const NotificationsScreen(),
+        '/home': (context) => const HomeScreen(),
         '/college_list': (context) => const CollegeListScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/settings': (context) => const SettingsScreen(),

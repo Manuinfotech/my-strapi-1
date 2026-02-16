@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -126,7 +127,19 @@ class OnboardingContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(imageUrl, height: 300),
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            height: 300,
+            placeholder: (context, url) => const SizedBox(
+              height: 300,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            errorWidget: (context, url, error) => Container(
+              height: 300,
+              color: Colors.grey[200],
+              child: const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+            ),
+          ),
           const SizedBox(height: 40),
           Text(
             title,

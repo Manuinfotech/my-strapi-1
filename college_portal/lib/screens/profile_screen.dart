@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../services/mock_data_service.dart';
 import '../models/user.dart';
 
@@ -27,11 +28,20 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(user.profilePictureUrl),
-              onBackgroundImageError: (exception, stackTrace) {},
-              child: const Icon(Icons.person, size: 50),
+            CachedNetworkImage(
+              imageUrl: user.profilePictureUrl,
+              imageBuilder: (context, imageProvider) => CircleAvatar(
+                radius: 50,
+                backgroundImage: imageProvider,
+              ),
+              placeholder: (context, url) => const CircleAvatar(
+                radius: 50,
+                child: CircularProgressIndicator(),
+              ),
+              errorWidget: (context, url, error) => const CircleAvatar(
+                radius: 50,
+                child: Icon(Icons.person, size: 50),
+              ),
             ),
             const SizedBox(height: 16),
             Text(

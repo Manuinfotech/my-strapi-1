@@ -30,6 +30,9 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(createHomeScreen());
 
+    // Allow any initial animations (like image placeholders) to start
+    await tester.pump();
+
     // Verify that our app starts with the Home Screen title.
     expect(find.text('College Portal'), findsOneWidget);
     expect(find.text('Top Colleges'), findsOneWidget);
@@ -41,10 +44,16 @@ void main() {
 
   testWidgets('Navigation to College List works', (WidgetTester tester) async {
     await tester.pumpWidget(createHomeScreen());
+    await tester.pump(); // Initial frame
 
     // Tap on 'View All'
     await tester.tap(find.text('View All'));
-    await tester.pumpAndSettle();
+
+    // We cannot use pumpAndSettle here because CachedNetworkImage's CircularProgressIndicator
+    // runs infinitely if the image doesn't load (which happens in tests).
+    // Instead, we pump for a sufficient duration to allow the navigation animation to complete.
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
 
     // Verify we are on the College List Screen
     expect(find.byType(ListView), findsWidgets);
